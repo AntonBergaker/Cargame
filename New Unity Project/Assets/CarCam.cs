@@ -11,6 +11,7 @@ public class CarCam : MonoBehaviour {
     public float zoomRacio = 0.5F;
     public float DefaultFOV = 80;
     private Vector3 rotationVector;
+    private RaycastHit hit;
 
 
 	// Use this for initialization
@@ -32,9 +33,19 @@ public class CarCam : MonoBehaviour {
         transform.position = car.position;
         transform.position -= currentRotation*Vector3.forward*distance;
         Vector3 temp = transform.position; // copy to an auxiliary variable...
+
         temp.y = myHeight; // modify the component you want in the variable...
+        Vector3 origin = new Vector3(temp.x, temp.y - 0.7F, temp.z);
+        Vector3 v_up = new Vector3(0F, 10F, 0F);
+        if (Physics.Raycast(origin, v_up, out hit, 50))
+        {
+            temp.y = Mathf.Lerp(temp.y,hit.point.y+0.5F,0.5F);
+            Debug.Log("Triggered");
+        }
+
         transform.position = temp; // and save the modified value 
         transform.LookAt(car);
+
     }
     void FixedUpdate (){
         Vector3 localVilocity = car.InverseTransformDirection(car.GetComponent<Rigidbody>().velocity);

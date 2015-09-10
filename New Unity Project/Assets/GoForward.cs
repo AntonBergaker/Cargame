@@ -19,7 +19,7 @@ public class GoForward : MonoBehaviour
         wheelBL.motorTorque = maxTorque * Input.GetAxis("Vertical");
         wheelFL.steerAngle = 40 * Input.GetAxis("Horizontal");
         wheelFR.steerAngle = 40 * Input.GetAxis("Horizontal");
-        body.AddForce(Input.GetAxis("Vertical")*100000*body.transform.forward);
+        body.AddForce(Input.GetAxis("Vertical")*100*body.transform.forward);
     }
     void Update()
     {

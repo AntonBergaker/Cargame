@@ -27,7 +27,7 @@ public class wheelfollow: MonoBehaviour
         }
         else
         {
-            transform.position = wheelCCenter - (wheelC.transform.up * wheelC.suspensionDistance);
+            transform.position = Vector3.Lerp(transform.position, wheelCCenter - (wheelC.transform.up * wheelC.suspensionDistance), 6F*Time.deltaTime);
         }
     }
 
