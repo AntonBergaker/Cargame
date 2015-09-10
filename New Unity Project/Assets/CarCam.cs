@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CarCam : MonoBehaviour {
 
@@ -40,7 +39,6 @@ public class CarCam : MonoBehaviour {
         if (Physics.Raycast(origin, v_up, out hit, 50))
         {
             temp.y = Mathf.Lerp(temp.y,hit.point.y+0.5F,0.5F);
-            Debug.Log("Triggered");
         }
 
         transform.position = temp; // and save the modified value 
