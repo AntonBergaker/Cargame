@@ -34,11 +34,11 @@ public class CarCam : MonoBehaviour {
         Vector3 temp = transform.position; // copy to an auxiliary variable...
 
         temp.y = myHeight; // modify the component you want in the variable...
-        Vector3 origin = new Vector3(temp.x, temp.y - 0.7F, temp.z);
+        Vector3 origin = new Vector3(temp.x, temp.y - 20F, temp.z);
         Vector3 v_up = new Vector3(0F, 10F, 0F);
         if (Physics.Raycast(origin, v_up, out hit, 50))
         {
-            temp.y = Mathf.Lerp(temp.y,hit.point.y+0.5F,0.5F);
+            temp.y = Mathf.Max(temp.y,hit.point.y+0.5F);
         }
 
         transform.position = temp; // and save the modified value 
