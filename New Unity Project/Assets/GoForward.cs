@@ -94,17 +94,17 @@ public class GoForward : MonoBehaviour
         //rotate the wheels
         wheelFLMesh.Rotate(wheelFL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         wheelFRMesh.Rotate(wheelFR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
-        //wheelBLMesh.Rotate(wheelBL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
-        //wheelBRMesh.Rotate(wheelBR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        wheelBLMesh.Rotate(wheelBL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        wheelBRMesh.Rotate(wheelBR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
 
 
         Vector3 temp = wheelFLMesh.localEulerAngles;
-        temp.y = wheelFL.steerAngle - wheelFLMesh.localEulerAngles.z +90;
+        temp.y = wheelFL.steerAngle - wheelFLMesh.localEulerAngles.z;
 
         wheelFLMesh.localEulerAngles = temp;
 
         temp = wheelFRMesh.localEulerAngles;
-        temp.y = wheelFR.steerAngle - wheelFRMesh.localEulerAngles.z +90;
+        temp.y = wheelFR.steerAngle - wheelFRMesh.localEulerAngles.z;
 
         wheelFRMesh.localEulerAngles = temp;
 
