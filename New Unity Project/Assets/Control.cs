@@ -5,6 +5,7 @@ public class Control : MonoBehaviour {
     public Rigidbody Car;
     public Object car;
     public GUIStyle Title;
+    public Texture map;
     private float dt = 0;
 
 	// Use this for initialization
@@ -22,7 +23,14 @@ public class Control : MonoBehaviour {
         GUI.Label(new Rect(10, 10, 1, 1), "KPH: " + Mathf.Round(Car.velocity.magnitude*15F), Title);
         GUI.Label(new Rect(10, 30, 1, 1), "Gear: " + GoForward.gear, Title);
         GUI.Label(new Rect(10, 50, 1, 1), "FPS: " + dt.ToString(), Title);
+
+        GUI.Label(new Rect(10, 70, 1, 1), "X: " + Car.position.x.ToString(), Title);
+        GUI.Label(new Rect(10, 90, 1, 1), "Y: " + Car.position.y.ToString(), Title);
+        GUI.DrawTexture(new Rect(100, 10, 150, 150), map);
+
+        float xx = (Car.position.x/500) * 150;
+        float zz = (Car.position.z/500)* 150;
+
+        GUI.DrawTexture(new Rect(175+zz, 85+xx, 30,30),map);
     }
 }
-
-
