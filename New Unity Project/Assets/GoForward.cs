@@ -3,11 +3,13 @@ using System.Collections;
 
 public class GoForward : MonoBehaviour
 {
-    public bool isEnemy;
+    public string carName;
+    public bool isAI;
+    public float checkpointSensetivity;
 
     public GameObject finishLine;
     public GameObject navGroup;
-    private GameObject[] navArray;
+    private Vector3[] navArray;
     public int raceLoc = 0;
     public int lap = 0;
     public int navArraySize = 0;
@@ -29,6 +31,8 @@ public class GoForward : MonoBehaviour
     public float maxTorque;
 
     public AudioSource engineSound;
+    public Texture speedTexture;
+    public float distanceToNext;
 
     private int respawntimer = 0;
 
@@ -38,23 +42,41 @@ public class GoForward : MonoBehaviour
     private float brakeBuildup = 0;
 
     void Start() {
-        navArray = new GameObject[navGroup.transform.childCount];
+        navArray = new Vector3[navGroup.transform.childCount];
         int rep = navGroup.transform.childCount;
         for (int i = 0; i < rep; i++)
         {
-            navArray[i] = navGroup.transform.GetChild(i).gameObject;
+            navArray[i] = navGroup.transform.GetChild(i).position;
+            navArray[i] += new Vector3(Random.Range(-0.5F, 0.5F), 0, Random.Range(-0.5F, 0.5F));
 
-            navArray[i].GetComponent<MeshRenderer>().enabled = false;
+            navGroup.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = false;
         }
         finishLine.GetComponent<MeshRenderer>().enabled = false;
         navArraySize = navArray.Length;
-        body.centerOfMass = new Vector3(0F,-0.05F,0F);
+        body.centerOfMass = new Vector3(0F,-0.075F,0F);
     }
 
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //calculate your position
+        //check up too 12 checkpoints forward
+        Vector3 pointcheck = new Vector3();
+
+        for (int i = 1; i < 15; i++)
+        {
+            if (i + raceLoc >= navArray.Length)
+            { break; }
+            pointcheck = navArray[raceLoc + i];
+            pointcheck.y = transform.position.y;
+            if (Vector3.Distance(transform.position, pointcheck) < checkpointSensetivity)
+            {
+                raceLoc += i;
+                break;
+            }
+        }
+
         float speed = body.velocity.magnitude * 15F;
         float stiffness = gear;
         float torque = 1;
@@ -109,7 +131,7 @@ public class GoForward : MonoBehaviour
 
         float vermov = 0;
         float hormov = 0;
-        if (!isEnemy) //If Player Controls
+        if (!isAI) //If Player Controls
         {
             vermov = Mathf.Clamp(Input.GetAxis("Vertical") - Input.GetAxis("Vertical-"), -1F, 1F);
             hormov = Input.GetAxis("Horizontal");
@@ -120,7 +142,7 @@ public class GoForward : MonoBehaviour
             RaycastHit hit;
 
             Vector3 origin = body.position;
-            origin.y += 0.20F;
+            origin.y += 0.30F;
             //detect collision
             if (Physics.Raycast(origin, transform.forward, out hit, 0.9F))
             {
@@ -158,7 +180,16 @@ public class GoForward : MonoBehaviour
             }
 
             //normal movement
-            Vector3 target = navArray[(raceLoc + 1) % navArray.Length].transform.position;
+            Vector3 target;
+            if (aiRecentCollide == false)
+            { target = navArray[(raceLoc + 1) % navArray.Length]; }
+            else { 
+                Vector3 oldtarget = navArray[(raceLoc) % navArray.Length];
+                Vector3 newtarget = navArray[(raceLoc + 1) % navArray.Length];
+                target = ((oldtarget - newtarget) * 0.75F) + newtarget;
+            }
+
+            Debug.DrawLine(transform.position, target);
 
             Vector3 RelativeWaypointPosition = transform.InverseTransformPoint(new Vector3(target.x,transform.position.y,target.z));
 
@@ -168,7 +199,7 @@ public class GoForward : MonoBehaviour
 
         wheelBR.motorTorque = torque * vermov;
         wheelBL.motorTorque = torque * vermov;
-        float stearMod = Mathf.Clamp(40F-(body.velocity.magnitude*5F),15F,40F);
+        float stearMod = Mathf.Clamp(40F-(body.velocity.magnitude*7F),10F,40F);
         wheelFL.steerAngle = stearMod * hormov;
         wheelFR.steerAngle = stearMod * hormov;
 
@@ -203,11 +234,11 @@ public class GoForward : MonoBehaviour
             if (respawntimer>240)
             {
                 body.isKinematic = true;
-                Vector3 tempV3 = navArray[raceLoc].transform.position;
+                Vector3 tempV3 = navArray[raceLoc];
                 tempV3.z += 1F;
 
                 body.position = tempV3;
-                body.transform.LookAt(navArray[raceLoc + 1].transform);
+                body.transform.LookAt(navArray[raceLoc + 1]);
 
                 Vector3 oldrot = body.rotation.eulerAngles;
                 oldrot.z = 0;
@@ -225,6 +256,9 @@ public class GoForward : MonoBehaviour
     }
     void Update()
     {
+        //make next targets distance public
+       distanceToNext = Vector3.Distance(body.position,navArray[(raceLoc+1) % navArray.Length]);
+
         //rotate the wheels
         wheelFLMesh.Rotate(wheelFL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
         wheelFRMesh.Rotate(wheelFR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
@@ -262,19 +296,6 @@ public class GoForward : MonoBehaviour
             backLightR.enabled = false;
             brakeBuildup = 0;
         }
-
-        //calculate your position
-        //check up too 12 checkpoints forward
-        for (int i = 0; i < 15; i++)
-        {
-            if (i+raceLoc >= navArray.Length)
-            { break; }
-            if (Vector3.Distance(transform.position, navArray[raceLoc+i].transform.position) < 7.5F)
-            {
-                raceLoc+=i;
-                break;
-            }
-        }
     }
     void OnTriggerEnter(Collider col)
     {
@@ -286,5 +307,39 @@ public class GoForward : MonoBehaviour
                 raceLoc = 0;
             }
         }
+    }
+
+
+
+    public Texture getTerrainTextureAt(Vector3 position)
+    {
+        // Set up:
+        Texture retval = new Texture();
+        Vector3 TS; // terrain size
+        Vector2 AS; // control texture size
+
+        TS = Terrain.activeTerrain.terrainData.size;
+        AS.x = Terrain.activeTerrain.terrainData.alphamapWidth;
+        AS.y = Terrain.activeTerrain.terrainData.alphamapHeight;
+
+
+        // Lookup texture we are standing on:
+        int AX = 250 + (int)((position.x / TS.x) * AS.x + 0.5f);
+        int AY = 250 + (int)((position.z / TS.z) * AS.y + 0.5f);
+        var TerrCntrl = Terrain.activeTerrain.terrainData.GetAlphamaps(AX, AY, 1, 1);
+
+        TerrainData TD = Terrain.activeTerrain.terrainData;
+
+        for (int i = 0; i < TD.splatPrototypes.Length; i++)
+        {
+            if (TerrCntrl[0, 0, i] > .5f)
+            {
+                retval = TD.splatPrototypes[i].texture;
+            }
+
+        }
+
+        Debug.Log(retval);
+        return retval;
     }
 }
