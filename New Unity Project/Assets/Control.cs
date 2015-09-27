@@ -114,8 +114,10 @@ public class Control : MonoBehaviour
             GUI.DrawTexture(new Rect(xx + mx + mapWidth * 0.5F - 8, zz + my + mapHeight * 0.5F - 8, 16, 16), dot);
         }
 
-        GUI.Label(new Rect(10, height - 10, 1, 1), getposition(cars[playercar].sPosition+1), bigTitle);
-        GUI.Label(new Rect(10, height-10, 1, 1), "FPS: " + dt.ToString(), Title);
+        GUI.Label(new Rect(10, height-10, 1, 1), getposition(cars[playercar].sPosition+1), bigTitle);
+        GUI.Label(new Rect(10, height-16, 1, 1), "FPS: " + dt.ToString(), Title);
+        GUI.Label(new Rect(10, height-70,1, 1), "Lap: " + Mathf.Round(cars[playercar].vars.lapTime), Title);
+        GUI.Label(new Rect(80, height -70, 1, 1), "Time: " + Mathf.Round(cars[playercar].vars.totalTime), Title);
     }
 
     string getposition(int pos)

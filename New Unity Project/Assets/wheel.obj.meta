@@ -7,11 +7,16 @@ ModelImporter:
   fileIDToRecycleName:
     100000: default
     100002: //RootNode
+    100004: objMesh
     400000: default
     400002: //RootNode
+    400004: objMesh
     2300000: default
+    2300002: objMesh
     3300000: default
+    3300002: objMesh
     4300000: default
+    4300002: objMesh
   materials:
     importMaterials: 1
     materialName: 1

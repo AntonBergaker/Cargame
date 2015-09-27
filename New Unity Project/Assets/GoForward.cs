@@ -10,9 +10,6 @@ public class GoForward : MonoBehaviour
     public GameObject finishLine;
     public GameObject navGroup;
     private Vector3[] navArray;
-    public int raceLoc = 0;
-    public int lap = 0;
-    public int navArraySize = 0;
 
     public WheelCollider wheelBR;
     public WheelCollider wheelBL;
@@ -27,12 +24,19 @@ public class GoForward : MonoBehaviour
     public Light backLightL;
     public Light backLightR;
 
-    public int gear = 1;
+    [HideInInspector] public int gear = 1;
     public float maxTorque;
 
     public AudioSource engineSound;
     public Texture speedTexture;
-    public float distanceToNext;
+
+    [HideInInspector] public float distanceToNext;
+    [HideInInspector] public int raceLoc = 0;
+    [HideInInspector] public int navArraySize = 0;
+    [HideInInspector] public int lap = 0;
+
+    [HideInInspector] public float lapTime;
+    [HideInInspector] public float totalTime;
 
     private int respawntimer = 0;
 
@@ -54,6 +58,8 @@ public class GoForward : MonoBehaviour
         finishLine.GetComponent<MeshRenderer>().enabled = false;
         navArraySize = navArray.Length;
         body.centerOfMass = new Vector3(0F,-0.075F,0F);
+        lapTime = 0F;
+        totalTime = 0F;
     }
 
 
@@ -256,6 +262,8 @@ public class GoForward : MonoBehaviour
     }
     void Update()
     {
+        lapTime += Time.deltaTime;
+        totalTime += Time.deltaTime;
         //make next targets distance public
        distanceToNext = Vector3.Distance(body.position,navArray[(raceLoc+1) % navArray.Length]);
 
@@ -305,6 +313,7 @@ public class GoForward : MonoBehaviour
             {
                 lap++;
                 raceLoc = 0;
+                lapTime = 0F;
             }
         }
     }
