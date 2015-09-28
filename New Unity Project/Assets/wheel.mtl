@@ -1,7 +1,7 @@
 # Blender MTL File: 'None'
 # Material Count: 1
 
-newmtl objMesh_Merged_Material
+newmtl None.001
 Ns 5.882353
 Ka 0.000000 0.000000 0.000000
 Kd 0.803922 0.803922 0.803922
@@ -10,4 +10,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd objMesh Merged Diffuse Texture0002.psd
+map_Kd None - Default Texture0000.psd
