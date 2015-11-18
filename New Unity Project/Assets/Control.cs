@@ -15,7 +15,7 @@ public class Cars
 public class Control : MonoBehaviour
 {
     public List<GameObject> carobjects = new List<GameObject>();
-    public static List<Cars> cars = new List<Cars>();
+    [HideInInspector]public List<Cars> cars = new List<Cars>();
 
     public GUIStyle Title;
     public GUIStyle bigTitle;
@@ -29,10 +29,17 @@ public class Control : MonoBehaviour
     public float mapHeight;
     public bool mapFromRight;
     public bool mapFromBot;
+    public GameObject cam;
 
     // Use this for initialization
     void Start()
     {
+        int selectedcar;
+        if (PlayerPrefs.HasKey("selectedcar"))
+        {selectedcar = PlayerPrefs.GetInt("selectedcar");}
+        else
+        { selectedcar = -1; }
+
         for (int i = 0; i < carobjects.Count; i++)
         {
             Cars temp = new Cars();
@@ -41,6 +48,20 @@ public class Control : MonoBehaviour
             temp.vars = carobjects[i].GetComponent<GoForward>();
 
             cars.Add(temp);
+            if (selectedcar != -1)
+            {
+                if (i == selectedcar)
+                {
+                    cam.GetComponent<CarCam>().carObject = temp.obj;
+                    cam.GetComponent<CarCam>().car = carobjects[i].GetComponent<Transform>();
+                    cam.GetComponent<CarCam>().carBody = temp.rigid;
+                    temp.vars.isAI = false;
+                }
+                else
+                {
+                    temp.vars.isAI = true;
+                }
+            }
         }
         Physics.gravity = new Vector3(0F, -5F, 0F);
     }

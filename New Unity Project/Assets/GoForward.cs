@@ -97,7 +97,7 @@ public class GoForward : MonoBehaviour
             }
         }
 
-        float speed = body.velocity.magnitude * 15F;
+        float speed = body.velocity.magnitude * 12F;
         //Change gears!
         
         //change downwards
@@ -273,12 +273,12 @@ public class GoForward : MonoBehaviour
 
 
         Vector3 temp = wheelFLMesh.localEulerAngles;
-        temp.y = wheelFL.steerAngle - wheelFLMesh.localEulerAngles.z;
+        temp.y = wheelFL.steerAngle*2 - wheelFLMesh.localEulerAngles.z;
 
         wheelFLMesh.localEulerAngles = temp;
 
         temp = wheelFRMesh.localEulerAngles;
-        temp.y = wheelFR.steerAngle - wheelFRMesh.localEulerAngles.z;
+        temp.y = wheelFR.steerAngle*2 - wheelFRMesh.localEulerAngles.z;
 
         wheelFRMesh.localEulerAngles = temp;
 

@@ -12,8 +12,8 @@ public class CarCam : MonoBehaviour
     public float DefaultFOV = 80;
     private Vector3 rotationVector;
     private RaycastHit hit;
-    private Transform car;
-    private Rigidbody carBody;
+    [HideInInspector]public Transform car;
+    [HideInInspector]public Rigidbody carBody;
 
     // Use this for initialization
     void Start()
