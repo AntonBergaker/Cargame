@@ -3,7 +3,7 @@
 public class CarCam : MonoBehaviour
 {
 
-    public Transform car;
+    public GameObject carObject;
     public float distance = 6.4F;
     public float height = 1.4F;
     public float rotationDampening = 3.0F;
@@ -12,11 +12,14 @@ public class CarCam : MonoBehaviour
     public float DefaultFOV = 80;
     private Vector3 rotationVector;
     private RaycastHit hit;
+    private Transform car;
+    private Rigidbody carBody;
 
     // Use this for initialization
     void Start()
     {
-
+        car = carObject.GetComponent<Transform>();
+        carBody = carObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -45,7 +48,6 @@ public class CarCam : MonoBehaviour
 
         transform.position = temp; // and save the modified value 
         transform.LookAt(car);
-
     }
     void FixedUpdate()
     {

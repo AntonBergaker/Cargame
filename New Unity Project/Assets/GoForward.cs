@@ -24,12 +24,14 @@ public class GoForward : MonoBehaviour
     public Light backLightL;
     public Light backLightR;
 
-    [HideInInspector] public int gear = 1;
+    public Gear[] gearBox;
     public float maxTorque;
+    public float turnPower;
 
     public AudioSource engineSound;
     public Texture speedTexture;
 
+    [HideInInspector] public int gear = 0;
     [HideInInspector] public float distanceToNext;
     [HideInInspector] public int raceLoc = 0;
     [HideInInspector] public int navArraySize = 0;
@@ -44,8 +46,20 @@ public class GoForward : MonoBehaviour
     private int aiRecentCollideTimer;
 
     private float brakeBuildup = 0;
+    private float gearTimer = 0;
+
+    [System.Serializable]
+    public class Gear
+    {
+        public float startSpeed;
+        public float endSpeed;
+        public float gearWheelPower;
+        public float gearTorquePower;
+    }
+
 
     void Start() {
+        //create an array of the the navpoints and add a slight randomification
         navArray = new Vector3[navGroup.transform.childCount];
         int rep = navGroup.transform.childCount;
         for (int i = 0; i < rep; i++)
@@ -84,46 +98,27 @@ public class GoForward : MonoBehaviour
         }
 
         float speed = body.velocity.magnitude * 15F;
-        float stiffness = gear;
-        float torque = 1;
         //Change gears!
-        if (speed < 10F)
+        
+        //change downwards
+        if (gear > 0)
         {
-            torque = 2;
-            stiffness = 7;
-            gear = 1;
+            if (speed < gearBox[gear-1].endSpeed)
+            { 
+                gear--;
+            }
+        }
+        if (gear < gearBox.Length-1)
+        {
+            if (speed > gearBox[gear+1].startSpeed)
+            { 
+                gear++;
+                if (gear != 1) {gearTimer = .5F;}
+            }
         }
 
-        else if (speed < 30F)
-        {
-            torque = 1.5F;
-            stiffness = 5;
-            gear = 1;
-        }
-        else if (speed < 60)
-        {
-            torque = 1;
-            stiffness = 4;
-            gear = 2;
-        }
-        else if (speed < 90)
-        {
-            torque = 1;
-            stiffness = 3;
-            gear = 3;
-        }
-        else if (speed < 120)
-        {
-            torque = 1;
-            stiffness = 2;
-            gear = 4;
-        }
-        else
-        {
-            torque = 1;
-            stiffness = 1;
-            gear = 5;
-        }
+        float stiffness = gearBox[gear].gearWheelPower;
+        float torque = gearBox[gear].gearTorquePower;
 
         torque = torque * maxTorque;
 
@@ -202,10 +197,12 @@ public class GoForward : MonoBehaviour
             hormov = (Mathf.Clamp(reverse * RelativeWaypointPosition.x / RelativeWaypointPosition.magnitude, -0.9F, 0.9F));
             vermov = Mathf.Clamp(reverse*(1-(Mathf.Abs(hormov)*0.6F)),-1F,1F);
         }
+        if ((wheelBL.rpm < 0F && speed > 30) || gearTimer > 0.3F)
+        { vermov = 0; }
 
         wheelBR.motorTorque = torque * vermov;
         wheelBL.motorTorque = torque * vermov;
-        float stearMod = Mathf.Clamp(40F-(body.velocity.magnitude*7F),10F,40F);
+        float stearMod = Mathf.Clamp(40F-(body.velocity.magnitude*7F),10F,40F)*turnPower;
         wheelFL.steerAngle = stearMod * hormov;
         wheelFR.steerAngle = stearMod * hormov;
 
@@ -262,6 +259,7 @@ public class GoForward : MonoBehaviour
     }
     void Update()
     {
+        gearTimer -= Time.deltaTime;
         lapTime += Time.deltaTime;
         totalTime += Time.deltaTime;
         //make next targets distance public
@@ -286,6 +284,10 @@ public class GoForward : MonoBehaviour
 
         //sounds
         engineSound.pitch = 1 + body.velocity.magnitude/10F;
+        if (gearTimer > 0)
+        { engineSound.volume = Mathf.Clamp(engineSound.volume - Time.deltaTime, 0.4F, 1F); }
+        else
+        { engineSound.volume = Mathf.Clamp(engineSound.volume + 2F * Time.deltaTime, 0F, 1F); }
 
         //breaklight
         if (wheelBL.rpm < 0F && Mathf.Clamp(Input.GetAxis("Vertical") - Input.GetAxis("Vertical-"), -1F, 1F) < 0)
