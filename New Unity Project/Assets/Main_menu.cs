@@ -7,6 +7,8 @@ public class Main_menu : MonoBehaviour {
     public Maptype[] scenes;
     public GUIStyle Title;
     public GUIStyle TitleBig;
+    public Texture background;
+    public bool drawBackground;
     private Vector2 mousepos;
     private int selectedmap = -1;
     private int fadeintimer = 0;
@@ -34,6 +36,9 @@ public class Main_menu : MonoBehaviour {
     void OnGUI()
     {
         GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(Screen.width / 1920.0f, Screen.height / 1080.0f, 1));
+
+        if (drawBackground)
+        { GUI.DrawTexture(new Rect(0, 0, 1920, 1080), background); }
 
         GUI.Label(new Rect(50, 50, 1, 1), "CARGAME", TitleBig);
         Title.fontSize = 65;

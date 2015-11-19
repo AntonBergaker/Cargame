@@ -18,6 +18,7 @@ public class Control : MonoBehaviour
     [HideInInspector]public List<Cars> cars = new List<Cars>();
 
     public GUIStyle Title;
+    public GUIStyle mediumTitle;
     public GUIStyle bigTitle;
     public Texture map;
     public Texture mapDot;
@@ -55,11 +56,13 @@ public class Control : MonoBehaviour
                     cam.GetComponent<CarCam>().carObject = temp.obj;
                     cam.GetComponent<CarCam>().car = carobjects[i].GetComponent<Transform>();
                     cam.GetComponent<CarCam>().carBody = temp.rigid;
+                    carobjects[i].GetComponent<AudioListener>().enabled = true;
                     temp.vars.isAI = false;
                 }
                 else
                 {
                     temp.vars.isAI = true;
+                    carobjects[i].GetComponent<AudioListener>().enabled = false;
                 }
             }
         }
@@ -134,11 +137,21 @@ public class Control : MonoBehaviour
 
             GUI.DrawTexture(new Rect(xx + mx + mapWidth * 0.5F - 8, zz + my + mapHeight * 0.5F - 8, 16, 16), dot);
         }
+        GUI.Label(new Rect(width-50, 14, 1, 1), "FPS: " + Mathf.Round(dt).ToString(), Title);
 
         GUI.Label(new Rect(10, height-10, 1, 1), getposition(cars[playercar].sPosition+1), bigTitle);
-        GUI.Label(new Rect(10, height-16, 1, 1), "FPS: " + dt.ToString(), Title);
-        GUI.Label(new Rect(10, height-70,1, 1), "Lap: " + Mathf.Round(cars[playercar].vars.lapTime), Title);
-        GUI.Label(new Rect(80, height -70, 1, 1), "Time: " + Mathf.Round(cars[playercar].vars.totalTime), Title);
+
+        GUI.Label(new Rect(100, height-20, 1, 1), Mathf.Round(cars[playercar].rigid.velocity.magnitude * 12F) + " KPH", mediumTitle);
+
+        string tottime = Mathf.Round(cars[playercar].vars.lapTime).ToString();
+        string laptime = Mathf.Round(cars[playercar].vars.totalTime).ToString();
+
+        string combined = tottime + "s";
+        if (tottime != laptime)
+        { combined += " (" + laptime + "s)"; }
+
+        GUI.Label(new Rect(10, height-90,1, 1), combined, Title);
+        GUI.Label(new Rect(10, height - 110, 1, 1), (cars[playercar].vars.lap+1).ToString()+"/3", Title);
     }
 
     string getposition(int pos)

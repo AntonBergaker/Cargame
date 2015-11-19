@@ -120,6 +120,9 @@ public class GoForward : MonoBehaviour
         float stiffness = gearBox[gear].gearWheelPower;
         float torque = gearBox[gear].gearTorquePower;
 
+        Debug.Log(speedTexture);
+        if (speedTexture != getTerrainTextureAt(body.transform.position))
+        { torque *= 0.8F; }
         torque = torque * maxTorque;
 
         WheelFrictionCurve temp = wheelBL.forwardFriction;
@@ -263,7 +266,7 @@ public class GoForward : MonoBehaviour
         lapTime += Time.deltaTime;
         totalTime += Time.deltaTime;
         //make next targets distance public
-       distanceToNext = Vector3.Distance(body.position,navArray[(raceLoc+1) % navArray.Length]);
+        distanceToNext = Vector3.Distance(body.position,navArray[(raceLoc+1) % navArray.Length]);
 
         //rotate the wheels
         wheelFLMesh.Rotate(wheelFL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
@@ -278,7 +281,7 @@ public class GoForward : MonoBehaviour
         wheelFLMesh.localEulerAngles = temp;
 
         temp = wheelFRMesh.localEulerAngles;
-        temp.y = wheelFR.steerAngle*2 - wheelFRMesh.localEulerAngles.z;
+        temp.y = wheelFR.steerAngle*1.8F - wheelFRMesh.localEulerAngles.z;
 
         wheelFRMesh.localEulerAngles = temp;
 
@@ -335,8 +338,8 @@ public class GoForward : MonoBehaviour
 
 
         // Lookup texture we are standing on:
-        int AX = 250 + (int)((position.x / TS.x) * AS.x + 0.5f);
-        int AY = 250 + (int)((position.z / TS.z) * AS.y + 0.5f);
+        int AX = (int)(((250 + position.x) / TS.x) * AS.x + 0.5f);
+        int AY = (int)(((250 + position.z) / TS.z) * AS.y + 0.5f);
         var TerrCntrl = Terrain.activeTerrain.terrainData.GetAlphamaps(AX, AY, 1, 1);
 
         TerrainData TD = Terrain.activeTerrain.terrainData;
@@ -349,8 +352,6 @@ public class GoForward : MonoBehaviour
             }
 
         }
-
-        Debug.Log(retval);
         return retval;
     }
 }
