@@ -59,6 +59,7 @@ public class GoForward : MonoBehaviour
 
 
     void Start() {
+        
         //create an array of the the navpoints and add a slight randomification
         navArray = new Vector3[navGroup.transform.childCount];
         int rep = navGroup.transform.childCount;
