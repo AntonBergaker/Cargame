@@ -32,6 +32,12 @@ public class Main_menu : MonoBehaviour {
         public float xoffset = 0;
     }
 
+    public static float quadOut(float CurrentStep, float TotalSteps, float StartValue, float ValueChange)
+    {
+        return -ValueChange * (CurrentStep /= TotalSteps) * (CurrentStep - 2) + StartValue;
+    }
+
+
 
     void OnGUI()
     {
@@ -55,15 +61,18 @@ public class Main_menu : MonoBehaviour {
             else
             { off = -1; }
             scenes[i].xoffset = Mathf.Clamp(scenes[i].xoffset + off, 0F, 60F);
-            float col = scenes[i].xoffset;
-            Title.normal.textColor = new Color(col/59,col/59,col/59);
-            GUI.Label(new Rect(100+scenes[i].xoffset, 450 + 120 * i, 1, 1), scenes[i].name, Title);
+
+            float col = scenes[i].xoffset / 59;
+            Title.normal.textColor = new Color(col,col,col);
+
+            float easescene = quadOut(scenes[i].xoffset, 60f, 0f, 60f);
+            GUI.Label(new Rect(100+easescene, 450 + 120 * i, 1, 1), scenes[i].name, Title);
         }
 
-        if (mousepos.x > 100 && mousepos.x < 650)
+        if (mousepos.x > 100 && mousepos.x < 650) //if mouse is in map area
         {
-            int mouseval = (int)Mathf.Floor((mousepos.y - 450F) / 120F);
-            if (mouseval >= 0 && mouseval < scenes.Length)
+            int mouseval = (int)Mathf.Floor((mousepos.y - 450F) / 120F); //get mouse height to select map
+            if (mouseval >= 0 && mouseval < scenes.Length) //if it's within bounds
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -77,23 +86,28 @@ public class Main_menu : MonoBehaviour {
         if (selectedmap != -1)
         {
             fadeintimer = Mathf.Clamp(fadeintimer+1,0,60);
+            float fadeinease = quadOut(fadeintimer, 60f, 0f, 60f);
+
             for (int i = 0; i < cars.Length; i++)
             {
+                float caroffset = quadOut(cars[i].xoffset, 60f, 0f, 60f);
                 float off;
                 if (i == selectedcar)
                 { off = 1; }
                 else
                 { off = -1; }
                 cars[i].xoffset = Mathf.Clamp(cars[i].xoffset + off, 0F, 60F);
-                float col = cars[i].xoffset;
-                Title.normal.textColor = new Color(col / 59, col / 59, col / 59,fadeintimer/60F);
-                GUI.Label(new Rect(580 + cars[i].xoffset + fadeintimer*2, 500 + 120 * i, 1, 1), cars[i].name, Title);
+                float col = cars[i].xoffset / 59;
+
+                //set correct color
+                Title.normal.textColor = new Color(col, col, col,fadeintimer/60F);
+                GUI.Label(new Rect(580 + caroffset+ fadeinease*2, 500 + 120 * i, 1, 1), cars[i].name, Title);
             }
 
             if (mousepos.x > 720 && mousepos.x < 1200)
             {
                 int mouseval = (int)Mathf.Floor((mousepos.y - 500F) / 120F);
-                if (mouseval >= 0 && mouseval < scenes.Length)
+                if (mouseval >= 0 && mouseval < cars.Length)
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -108,10 +122,15 @@ public class Main_menu : MonoBehaviour {
         if (selectedcar != -1)
         {
             fadeintimer2 = Mathf.Clamp(fadeintimer2 + 1, 0, 60);
+            float fadeinease = quadOut(fadeintimer2, 60f, 0f, 60f);
+            float playease = quadOut(playoffset, 60f, 0f, 60f);
 
             playoffset = Mathf.Clamp(playoffset -1, 0, 60);
-            Title.normal.textColor = new Color((float)playoffset / 59, (float)playoffset / 59, (float)playoffset / 59, fadeintimer2 / 60F);
-            GUI.Label(new Rect(1100 + playoffset + fadeintimer2 * 2, 550 , 1, 1), "Start", Title);
+
+            //set correct color
+            float col = (float)playoffset / 59;
+            Title.normal.textColor = new Color(col, col, col, fadeintimer2 / 60F);
+            GUI.Label(new Rect(1100 + playease + fadeinease * 2, 550 , 1, 1), "Start", Title);
             
 
             if (mousepos.x > 1200 && mousepos.x < 1600)
@@ -119,9 +138,8 @@ public class Main_menu : MonoBehaviour {
                 int mouseval = (int)Mathf.Floor((mousepos.y - 550F) / 120F);
                 if (mouseval == 0)
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonDown(0)) //move into the game
                     {
-
                         PlayerPrefs.SetInt("selectedcar", selectedcar);
                         Application.LoadLevel(scenes[selectedmap].fileName);
                     }

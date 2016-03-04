@@ -67,3 +67,8 @@ C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Netw
 C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp.dll
 C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp.pdb
+C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\EasyRoads3D.dll
+C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Advertisements.dll
+C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Analytics.dll
+C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Advertisements.xml
+C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Analytics.xml
