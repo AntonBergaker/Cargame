@@ -29,7 +29,12 @@ public class GoForward : MonoBehaviour
     public float turnPower;
 
     public AudioSource engineSound;
+    public bool useSpeedTexture;
     public Texture speedTexture;
+    public float speedTextureLoss;
+    public bool useSpeedCollider;
+    public GameObject speedCollider;
+    public float speedColliderGain;
 
     [HideInInspector] public int gear = 0;
     [HideInInspector] public float distanceToNext;
@@ -58,8 +63,7 @@ public class GoForward : MonoBehaviour
     }
 
 
-    void Start() {
-        
+    public void CStart() {
         //create an array of the the navpoints and add a slight randomification
         navArray = new Vector3[navGroup.transform.childCount];
         int rep = navGroup.transform.childCount;
@@ -82,7 +86,7 @@ public class GoForward : MonoBehaviour
     void FixedUpdate()
     {
         //calculate your position
-        //check up too 12 checkpoints forward
+        //check up too 15 checkpoints forward
         Vector3 pointcheck = new Vector3();
 
         for (int i = 1; i < 15; i++)
@@ -120,10 +124,22 @@ public class GoForward : MonoBehaviour
 
         float stiffness = gearBox[gear].gearWheelPower;
         float torque = gearBox[gear].gearTorquePower;
-
-        Debug.Log(speedTexture);
-        if (speedTexture != getTerrainTextureAt(body.transform.position))
-        { torque *= 0.8F; }
+        if (useSpeedTexture)
+        {
+            if (speedTexture != getTerrainTextureAt(body.transform.position))
+            { torque *= speedTextureLoss; }
+        }
+        if (useSpeedCollider)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(body.position,-transform.up,out hit,0.5F))
+            {
+                if (hit.transform.gameObject == speedCollider)
+                {
+                    torque *=speedColliderGain;
+                }
+            }
+        }
         torque = torque * maxTorque;
 
         WheelFrictionCurve temp = wheelBL.forwardFriction;

@@ -31,13 +31,17 @@ public class Control : MonoBehaviour
     public bool mapFromRight;
     public bool mapFromBot;
     public GameObject cam;
+    public GameObject[] navigationGroups;
 
     // Use this for initialization
     void Start()
     {
         int selectedcar;
         if (PlayerPrefs.HasKey("selectedcar"))
-        {selectedcar = PlayerPrefs.GetInt("selectedcar");}
+        {
+            selectedcar = PlayerPrefs.GetInt("selectedcar");
+            PlayerPrefs.DeleteKey("selectedcar");
+        }
         else
         { selectedcar = -1; }
 
@@ -57,6 +61,7 @@ public class Control : MonoBehaviour
                     cam.GetComponent<CarCam>().car = carobjects[i].GetComponent<Transform>();
                     cam.GetComponent<CarCam>().carBody = temp.rigid;
                     carobjects[i].GetComponent<AudioListener>().enabled = true;
+                    temp.vars.navGroup = navigationGroups[0];
                     temp.vars.isAI = false;
                 }
                 else
@@ -64,6 +69,15 @@ public class Control : MonoBehaviour
                     temp.vars.isAI = true;
                     carobjects[i].GetComponent<AudioListener>().enabled = false;
                 }
+            }
+            temp.vars.CStart(); //initalize the objects from here
+        }
+        for (int i = 0; i < navigationGroups.Length;i++ ) //hide the nav arrays
+        {
+            int rep = navigationGroups[i].transform.childCount;
+            for (int ii = 0; ii < rep; ii++)
+            {
+                navigationGroups[i].transform.GetChild(ii).GetComponent<MeshRenderer>().enabled = false;
             }
         }
         Physics.gravity = new Vector3(0F, -5F, 0F);

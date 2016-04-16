@@ -33,6 +33,8 @@ public class CarCam : MonoBehaviour
         float myHeight = transform.position.y;
         myAngel = Mathf.LerpAngle(myAngel, wantedAngel, rotationDampening * Time.deltaTime);
         myHeight = Mathf.Lerp(myHeight, wantedHeight, heightDampening * Time.deltaTime);
+        if (myHeight < wantedHeight)
+        { myHeight = Mathf.Lerp(myHeight,wantedHeight,0.1F * Time.deltaTime); }
         var currentRotation = Quaternion.Euler(0, myAngel, 0);
         transform.position = car.position;
         transform.position -= currentRotation * Vector3.forward * distance;

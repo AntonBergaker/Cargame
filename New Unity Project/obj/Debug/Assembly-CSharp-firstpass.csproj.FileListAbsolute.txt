@@ -65,7 +65,3 @@ C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp-first
 C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp-firstpass.pdb
 C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\EasyRoads3D.dll
-C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Advertisements.dll
-C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Analytics.dll
-C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Advertisements.xml
-C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Analytics.xml
