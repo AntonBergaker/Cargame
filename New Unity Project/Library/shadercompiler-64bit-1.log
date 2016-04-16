@@ -1,9 +1,5 @@
 Base path: C:/Program Files/Unity/Editor/Data
-<<<<<<< HEAD
-Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-2204
-=======
-Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-11952
->>>>>>> origin/master
+Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-11880
 Cmd: getPlatforms
 Cmd: preprocess
   insize=4320 outsize=1045 ok=1
@@ -12,7 +8,55 @@ Cmd: preprocess
 Cmd: preprocess
   insize=608 outsize=1144 ok=1
 Cmd: preprocess
+  insize=2990 outsize=2558 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=9591 outsize=5231 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=9591 outsize=5401 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6901 outsize=4467 kw=POINT pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6901 outsize=5604 kw=POINT pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6206 outsize=4516 kw= pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6206 outsize=2834 kw= pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=8529 outsize=4581 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=8529 outsize=2582 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=9103 outsize=5231 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=9103 outsize=4573 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6191 outsize=5198 kw= pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6191 outsize=2289 kw= pd= ok=1
+Cmd: preprocess
   insize=13263 outsize=2671 ok=1
+Cmd: preprocess
+  insize=2483 outsize=2121 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=9518 outsize=5231 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=9518 outsize=5336 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6828 outsize=4467 kw=POINT pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6828 outsize=5539 kw=POINT pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6088 outsize=4516 kw= pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6088 outsize=2769 kw= pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=8456 outsize=4581 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=8456 outsize=2582 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6073 outsize=5198 kw= pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6073 outsize=2289 kw= pd= ok=1
 Cmd: preprocess
   insize=2379 outsize=1092 ok=1
 Cmd: preprocess
@@ -33,3 +77,15 @@ Cmd: preprocess
   insize=2274 outsize=1036 ok=1
 Cmd: preprocess
   insize=588 outsize=588 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=1215 outsize=1314 kw= pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=1215 outsize=1168 kw= pd= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6901 outsize=4467 kw=DIRECTIONAL pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6901 outsize=4833 kw=DIRECTIONAL pd= ok=1
+Unhandled exception: Readfile from pipe failed. GLE=The pipe has been ended.
+
+
+Quitting shader compiler process
