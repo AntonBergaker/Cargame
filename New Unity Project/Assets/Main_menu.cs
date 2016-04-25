@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Main_menu : MonoBehaviour {
@@ -7,7 +8,10 @@ public class Main_menu : MonoBehaviour {
     public Maptype[] scenes;
     public GUIStyle Title;
     public GUIStyle TitleBig;
+    public GUIStyle TitleSmall;
+    public GUIStyle TitleHuge;
     public Texture background;
+    public Texture blackSquare;
     public bool drawBackground;
     private Vector2 mousepos;
     private int selectedmap = -1;
@@ -15,6 +19,8 @@ public class Main_menu : MonoBehaviour {
     private int selectedcar = -1;
     private int fadeintimer2 = 0;
     private int playoffset = 0;
+
+    private int loading = 0;
 
     [System.Serializable]
     public class Maptype
@@ -47,10 +53,8 @@ public class Main_menu : MonoBehaviour {
         { GUI.DrawTexture(new Rect(0, 0, 1920, 1080), background); }
 
         GUI.Label(new Rect(50, 50, 1, 1), "CARGAME", TitleBig);
-        Title.fontSize = 65;
-        Title.normal.textColor = Color.black;
-        GUI.Label(new Rect(700, 300, 1F, 1F), "Anton Bergåker", Title);
-        Title.fontSize = 90;
+
+        GUI.Label(new Rect(700, 300, 1F, 1F), "Anton Bergåker", TitleSmall);
 
         mousepos = Event.current.mousePosition;
         for (int i = 0; i < scenes.Length;i++ )
@@ -62,8 +66,8 @@ public class Main_menu : MonoBehaviour {
             { off = -1; }
             scenes[i].xoffset = Mathf.Clamp(scenes[i].xoffset + off, 0F, 60F);
 
-            float col = scenes[i].xoffset / 59;
-            Title.normal.textColor = new Color(col,col,col);
+            //float col = scenes[i].xoffset / 59;
+            Title.normal.textColor = Color.Lerp(Color.white, new Color(0.529F, 0.808F, 0.98F), scenes[i].xoffset / 59);
 
             float easescene = quadOut(scenes[i].xoffset, 60f, 0f, 60f);
             GUI.Label(new Rect(100+easescene, 450 + 120 * i, 1, 1), scenes[i].name, Title);
@@ -97,10 +101,11 @@ public class Main_menu : MonoBehaviour {
                 else
                 { off = -1; }
                 cars[i].xoffset = Mathf.Clamp(cars[i].xoffset + off, 0F, 60F);
-                float col = cars[i].xoffset / 59;
-
+                //float col = cars[i].xoffset / 59;
+                Color col = Color.Lerp(Color.white, new Color(0.529F, 0.808F, 0.98F), cars[i].xoffset / 59);
+                col.a = fadeintimer / 60F;
                 //set correct color
-                Title.normal.textColor = new Color(col, col, col,fadeintimer/60F);
+                Title.normal.textColor = col;
                 GUI.Label(new Rect(580 + caroffset+ fadeinease*2, 500 + 120 * i, 1, 1), cars[i].name, Title);
             }
 
@@ -128,8 +133,12 @@ public class Main_menu : MonoBehaviour {
             playoffset = Mathf.Clamp(playoffset -1, 0, 60);
 
             //set correct color
-            float col = (float)playoffset / 59;
-            Title.normal.textColor = new Color(col, col, col, fadeintimer2 / 60F);
+            //float col = (float)playoffset / 59;
+            Color col = Color.Lerp(Color.white, new Color(0.529F, 0.808F, 0.98F), (float)playoffset / 59);
+            col.a = fadeintimer2 / 60F;
+
+            Title.normal.textColor = col;
+
             GUI.Label(new Rect(1100 + playease + fadeinease * 2, 550 , 1, 1), "Start", Title);
             
 
@@ -141,11 +150,17 @@ public class Main_menu : MonoBehaviour {
                     if (Input.GetMouseButtonDown(0)) //move into the game
                     {
                         PlayerPrefs.SetInt("selectedcar", selectedcar);
-                        Application.LoadLevel(scenes[selectedmap].fileName);
+                        loading++;
+                        //Application.LoadLevel(scenes[selectedmap].fileName);
                     }
                 playoffset = Mathf.Clamp(playoffset + 2, 0, 60); 
                 }
             }
+        }
+        if (loading >= 1)
+        {
+            GUI.DrawTexture(new Rect(0, 0, 1920, 1080), blackSquare);
+            GUI.Label(new Rect(1920/2,1080/2,1,1), "Loading...", TitleHuge);
         }
 
      }
@@ -153,6 +168,18 @@ public class Main_menu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    if (Input.GetButtonDown("Cancel"))
+        {
+            Application.Quit();
+        }
+
+        if (loading >= 1)
+        {
+            if (loading >= 3)
+            {
+                SceneManager.LoadScene(selectedmap + 1);
+            }
+            loading++;
+        }
 	}
 }

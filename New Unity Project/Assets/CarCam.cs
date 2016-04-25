@@ -15,15 +15,14 @@ public class CarCam : MonoBehaviour
     [HideInInspector]public Transform car;
     [HideInInspector]public Rigidbody carBody;
 
+    private bool paused = false;
+
     // Use this for initialization
     void Start()
     {
         car = carObject.GetComponent<Transform>();
         carBody = carObject.GetComponent<Rigidbody>();
     }
-
-    // Update is called once per frame
-
 
     void LateUpdate()
     {
@@ -33,8 +32,6 @@ public class CarCam : MonoBehaviour
         float myHeight = transform.position.y;
         myAngel = Mathf.LerpAngle(myAngel, wantedAngel, rotationDampening * Time.deltaTime);
         myHeight = Mathf.Lerp(myHeight, wantedHeight, heightDampening * Time.deltaTime);
-        if (myHeight < wantedHeight)
-        { myHeight = Mathf.Lerp(myHeight,wantedHeight,0.2F * Time.deltaTime); }
         var currentRotation = Quaternion.Euler(0, myAngel, 0);
         transform.position = car.position;
         transform.position -= currentRotation * Vector3.forward * distance;

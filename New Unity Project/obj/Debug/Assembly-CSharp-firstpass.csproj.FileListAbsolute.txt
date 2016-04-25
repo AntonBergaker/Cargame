@@ -46,7 +46,6 @@ C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\Assembly-CSharp-
 C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
 C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\Mono.Cecil.dll
 C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\UnityEditor.dll
-C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
 C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.dll
 C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.Networking.dll
 C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\UnityEngine.UI.dll
@@ -65,3 +64,4 @@ C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp-first
 C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\Anton\Cargame\Cargame\New Unity Project\obj\Debug\Assembly-CSharp-firstpass.pdb
 C:\Onödiga Grejer\dev\Cargame\New Unity Project\Temp\bin\Debug\EasyRoads3D.dll
+C:\Users\Anton\Cargame\Cargame\New Unity Project\Temp\bin\Debug\EasyRoads3D.dll

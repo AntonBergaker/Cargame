@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GoForward : MonoBehaviour
 {
@@ -45,6 +46,9 @@ public class GoForward : MonoBehaviour
     [HideInInspector] public float lapTime;
     [HideInInspector] public float totalTime;
 
+    [HideInInspector]public List<float> lapTimes = new List<float>();
+
+    private float timer = 0;
     private int respawntimer = 0;
 
     private bool aiRecentCollide;
@@ -70,7 +74,7 @@ public class GoForward : MonoBehaviour
         for (int i = 0; i < rep; i++)
         {
             navArray[i] = navGroup.transform.GetChild(i).position;
-            navArray[i] += new Vector3(Random.Range(-0.5F, 0.5F), 0, Random.Range(-0.5F, 0.5F));
+            navArray[i] += new Vector3(Random.Range(-0.25F, 0.25F), 0, Random.Range(-0.25F, 0.25F));
 
             navGroup.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = false;
         }
@@ -85,6 +89,8 @@ public class GoForward : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (timer > 8)
+        {
         //calculate your position
         //check up too 15 checkpoints forward
         Vector3 pointcheck = new Vector3();
@@ -164,32 +170,20 @@ public class GoForward : MonoBehaviour
 
             Vector3 origin = body.position;
             origin.y += 0.30F;
-            //detect collision
-            if (Physics.Raycast(origin, transform.forward, out hit, 0.9F))
-            {
-                aiRecentCollide = true;
-                aiRecentCollideTimer = 15;
-            }
-            var forward = transform.forward;
-            Debug.DrawRay(origin, forward * 0.9F, Color.blue);
-            origin += transform.right * 0.15F;
+            origin -= transform.right * 0.15F;
 
-            //detect collision
-            if (Physics.Raycast(origin, transform.forward, out hit, 0.9F))
+            for (int i = 0; i < 3;i++ )
             {
-                aiRecentCollide = true;
-                aiRecentCollideTimer = 15;
+                if (Physics.Raycast(origin, transform.forward, out hit, 0.9F))
+                {
+                    aiRecentCollide = true;
+                    aiRecentCollideTimer = 15;
+                }
+                var forward = transform.forward;
+                Debug.DrawRay(origin, forward * 0.9F, Color.blue);
+                origin += transform.right * 0.15F;
             }
-            Debug.DrawRay(origin, forward * 0.9F, Color.blue);
-            origin -= transform.right*0.3F;
-            
-            //detect collision
-            if (Physics.Raycast(origin, transform.forward, out hit, 0.9F))
-            {
-                aiRecentCollide = true;
-                aiRecentCollideTimer = 15;
-            }
-            Debug.DrawRay(origin, forward * 0.9F, Color.blue);
+
             //if collision correction
             if (aiRecentCollide)
             {
@@ -275,10 +269,12 @@ public class GoForward : MonoBehaviour
         }
         else
         { respawntimer = 0;}
+        }
 
     }
     void Update()
     {
+        timer += Time.deltaTime;
         gearTimer -= Time.deltaTime;
         lapTime += Time.deltaTime;
         totalTime += Time.deltaTime;
@@ -335,7 +331,11 @@ public class GoForward : MonoBehaviour
             {
                 lap++;
                 raceLoc = 0;
+                lapTimes.Add(lapTime);
                 lapTime = 0F;
+
+                if (lap > 3)
+                { }
             }
         }
     }
