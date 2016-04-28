@@ -156,6 +156,7 @@ public class Control : MonoBehaviour
                 cars[i].score = cars[i].vars.lap * 300000;
                 cars[i].score += cars[i].vars.raceLoc * 1000;
                 cars[i].score -= (int)(cars[i].vars.distanceToNext*10F);
+                cars[i].score -= (int)(cars[i].vars.isAI);
             }
 
             for (int i = 0; i < cars.Count; i++) {
@@ -192,20 +193,24 @@ public class Control : MonoBehaviour
                     GUI.Label(new Rect(50, cars[i].xPos, 1, 1), cars[i].vars.carName, Title);
                 }
 
-                xx = (cars[i].rigid.position.x / worldSize) * mapWidth;
-                zz = -(cars[i].rigid.position.z / worldSize) * mapHeight;
-
-                Texture dot;
-                if (cars[i].vars.isAI)
-                { dot = enemyMapDot; }
-                else
+                if (!cars[i].vars.isAI)
                 {
-                    dot = mapDot;
                     playercar = i;
                 }
+                else
+                {
+                    xx = (cars[i].rigid.position.x / worldSize) * mapWidth;
+                    zz = -(cars[i].rigid.position.z / worldSize) * mapHeight;
 
-                GUI.DrawTexture(new Rect(xx + mx + mapWidth * 0.5F - 8, zz + my + mapHeight * 0.5F - 8, 16, 16), dot);
+                    GUI.DrawTexture(new Rect(xx + mx + mapWidth * 0.5F - 8, zz + my + mapHeight * 0.5F - 8, 16, 16), enemyMapDot);
+                }
             }
+            float xx = (cars[playercar].rigid.position.x / worldSize) * mapWidth;
+            float zz = -(cars[playercar].rigid.position.z / worldSize) * mapHeight;
+            GUI.DrawTexture(new Rect(xx + mx + mapWidth * 0.5F - 8, zz + my + mapHeight * 0.5F - 8, 16, 16), mapDot);
+
+
+            Title.normal.textColor = new Color(1F, 1F, 1F);
 
             GUI.Label(new Rect(10, height-10, 1, 1), getposition(cars[playercar].sPosition+1), bigTitle);
 
